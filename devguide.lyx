@@ -214,7 +214,7 @@ import
 \emph on
 morpho
 \emph default
- program!
+ program! 
 \end_layout
 
 \begin_layout Itemize
@@ -233,7 +233,8 @@ import
 \family default
  keyword; the distinction between modules and extensions is purposefully
  not visible to the user; a module could be reimplemented as an extension
- with the same interface, for example
+ with the same interface, for example.
+ 
 \begin_inset Separator plain
 \end_inset
 
@@ -251,7 +252,11 @@ morpho
 
 \series default
  Changes to the core data types, improvements to the compiler, etc.
- could be incorporated into morpho directly.
+ could be incorporated into the 
+\emph on
+morpho
+\emph default
+ source directly.
  We highly recommend connecting to the 
 \emph on
 morpho
@@ -259,12 +264,20 @@ morpho
  developers before doing this to check if the idea is already being worked
  on, or whether there is guidance or advice on how specific features should
  work.
- 
+ Bug reports, suggestions for new features are welcome; please see 
+\family typewriter
+CONTRIBUTING.md
+\family default
+ in the 
+\emph on
+morpho
+\emph default
+ git repository.
 \end_layout
 
 \begin_layout Standard
-Modules and extensions should be distributed in their own git repository
- as a package.
+Modules and extensions can be distributed in their own git repository as
+ a package.
  See Chapter 
 \begin_inset CommandInset ref
 LatexCommand ref
@@ -422,11 +435,12 @@ To facilitate convenient distribution,
 \emph on
 morpho
 \emph default
- supports a lightweight notion of 
+ supports a lightweight notion of a 
 \emph on
-packages
+package
 \emph default
-, which comprise some functionality.
+, which is a folder containing files that collectively provide some enhancement
+ or functionality.
  A package is simply a git repository that contains some or all of the following
  file structure: 
 \end_layout
@@ -500,7 +514,7 @@ morpho-
 \emph on
 Morpho
 \emph default
- help files 
+ help files
 \end_layout
 
 \begin_layout Standard
@@ -522,7 +536,11 @@ literal "false"
 \family typewriter
 /share/help
 \family default
- folder of your package so that morpho can find them.
+ folder of your package so that 
+\emph on
+morpho
+\emph default
+ can find them.
  
 \end_layout
 
@@ -735,6 +753,96 @@ showsubtopics
 Coding in 
 \emph on
 morpho
+\end_layout
+
+\begin_layout Chapter
+
+\emph on
+Morpho
+\emph default
+ hints
+\end_layout
+
+\begin_layout Standard
+Despite its small syntax, 
+\emph on
+morpho
+\emph default
+ provides many powerful features in common with other modern dynamic languages.
+ In this chapter, we discuss how to write good 
+\emph on
+morpho
+\emph default
+ code.
+ 
+\end_layout
+
+\begin_layout Section
+Data structures
+\end_layout
+
+\begin_layout Standard
+Morpho provides a wide variety of data structures for you to use.
+ Most of these are standard fare in computer science, and hence we do not
+ provide detailed theoretical background here.
+ Rather, we focus on explaining the various circumstances each data structure
+ may be of use.
+ 
+\end_layout
+
+\begin_layout Section
+Protocols
+\end_layout
+
+\begin_layout Standard
+As a dynamic language, 
+\emph on
+morpho
+\emph default
+ makes heavy use of 
+\emph on
+protocols
+\emph default
+.
+ Protocols are collections of methods defined in different classes that
+ aim to provide analogous class-dependent functionality.
+ For example, although the implementation of the 
+\family typewriter
+clone()
+\family default
+ method looks quite different within each class definition, it behaves the
+ same way everywhere, namely making a shallow copy of an object.
+ Hence, the user can rely on calling 
+\family typewriter
+clone()
+\family default
+ without worrying about the specific type of an object it's attempting to
+ clone.
+ Protocols make code more reusable, reduce duplication, and reduce the need
+ for type checking.
+ Unlike languages such as Swift and Objective C, where protocols are defined
+ with a specific keyword, 
+\emph on
+morpho
+\emph default
+ eschews this and simply adopts them informally.
+ 
+\end_layout
+
+\begin_layout Subsection
+Clone
+\end_layout
+
+\begin_layout Standard
+The clone method makes a 
+\emph on
+shallow
+\emph default
+ copy of an object, i.e.
+ any attached objects are duplicated rather than cloned themselves.
+ If a deep clone is necessary for a particular class, the user should provide
+ this as a separate method.
+ 
 \end_layout
 
 \begin_layout Chapter
@@ -1430,7 +1538,7 @@ There are some special entries: anonymous functions are reported as
 \end_inset
 
  of execution time; if it becoms significantly higher, this may suggest
- your program is created too many temporary objects.
+ your program is creating too many temporary objects.
  
 \end_layout
 
@@ -1784,7 +1892,8 @@ In the imminent future, we anticipate providing an automated way to build
 \end_layout
 
 \begin_layout Standard
-We also note that the C API is not yet stable.
+We also note that the C API is not yet entirely stable; this will occur
+ at v1.0.0.
  As we gain experience writing extensions and identify common needs, we
  anticipate improving the API.
  We welcome your feedback.
@@ -1805,8 +1914,11 @@ morpho
 Morpho
 \emph default
 , like many languages, is implemented in C for performance reasons.
- Extensions to morpho can also be written in C, or in a language that can
- link with C.
+ Extensions to 
+\emph on
+morpho
+\emph default
+ can also be written in C, or in any language that can link with C.
  
 \end_layout
 
@@ -1881,7 +1993,8 @@ nil
 
 \begin_layout Standard
 The structure of a value is kept opaque for performance reasons; setting
- and getting a value must be done through macros provided by 
+ and getting a value must be done through macros and functions provided
+ by 
 \emph on
 morpho:
 \end_layout
@@ -1923,37 +2036,6 @@ MORPHO_FLOAT()
 \begin_layout Itemize
 
 \series bold
-Convert a C type to a 
-\family typewriter
-value
-\family default
-.
-
-\series default
- Use the macros 
-\family typewriter
-MORPHO_INTEGER
-\family default
-, 
-\family typewriter
-MORPHO_FLOAT
-\family default
-, 
-\family typewriter
-MORPHO_OBJECT
-\family default
-, 
-\family typewriter
-MORPHO_BOOL
-\family default
-.
- to do this.
- 
-\end_layout
-
-\begin_layout Itemize
-
-\series bold
 Convert a 
 \family typewriter
 value
@@ -1978,6 +2060,19 @@ MORPHO_GETBOOLVALUE
 MORPHO_GETOBJECT
 \family default
 .
+ In general, it's important to be sure that a value contains the type you
+ expect before using these.
+ Use 
+\family typewriter
+morpho_valuetoint
+\family default
+ or 
+\family typewriter
+morpho_valuetofloat
+\family default
+ for example to convert a generic value to an integer or double respectively;
+ these functions return true if they succeed.
+ 
 \end_layout
 
 \begin_layout Itemize
@@ -2011,8 +2106,11 @@ MORPHO_ISBOOL
 \series bold
 not
 \series default
- use a direct comparison with a literal, because the value implementation
- is intentionally opaque and such comparisons may fail.
+ use a direct comparison with a literal, because the 
+\family typewriter
+value
+\family default
+ implementation is intentionally opaque and such comparisons may fail.
  In other words, do this
 \begin_inset listings
 inline false
@@ -2193,7 +2291,7 @@ MORPHO_GETSTRING
  MORPHO_GETLIST
 \family default
  or similar to retrieve a pointer of the correct type.
- Convenience macros such as 
+ For some types, convenience macros such as 
 \family typewriter
 MORPHO_GETCSTRING
 \family default
@@ -2220,8 +2318,28 @@ noprefix "false"
  
 \end_layout
 
+\begin_layout Standard
+You 
+\series bold
+must not
+\series default
+ store a 
+\emph on
+generic
+\emph default
+ pointer in a value using MORPHO_OBJECT, only a suitably defined 
+\family typewriter
+struct
+\family default
+ will work.
+ Passing a generic pointer to the virtual machine will likely cause a segfault,
+ and it may occur at a random point (i.e.
+ when the garbage collector runs).
+ 
+\end_layout
+
 \begin_layout Subsection
-Varray
+Varrays
 \end_layout
 
 \begin_layout Standard
@@ -2230,7 +2348,7 @@ Variable length arrays are arrays that dynamically adjust in size as new
  They're a very useful type that differs only by the type contained in them.
  Hence, 
 \family typewriter
-common.h
+varray.h
 \family default
  provides two convenient macros to create them for a specific type.
  Suppose we want to define a varray of integers: to do so, we would include
@@ -2284,22 +2402,29 @@ status open
 
 \begin_layout Plain Layout
 
-varray_integerinit(varray_integer *v);
+void varray_integerinit(varray_integer *v); // Initialize a varray
 \end_layout
 
 \begin_layout Plain Layout
 
-varray_integeradd(varray_integer *v, int data[], int count);
+bool varray_integeradd(varray_integer *v, int data[], int count); // Add
+ a specified number of elements
 \end_layout
 
 \begin_layout Plain Layout
 
-varray_integerwrite(varray_integer *v, int data);
+bool varray_integerresize(varray_integer *v, int count); // Resize the varray
 \end_layout
 
 \begin_layout Plain Layout
 
-varray_integerclear(varray_integer *v);
+int varray_integerwrite(varray_integer *v, int data); // Add one element,
+ returns number of elements
+\end_layout
+
+\begin_layout Plain Layout
+
+void varray_integerclear(varray_integer *v); // Clear the varray
 \end_layout
 
 \end_inset
@@ -2369,7 +2494,38 @@ varray_integerclear(&v);
 
 \end_inset
 
-
+Check the 
+\emph on
+morpho
+\emph default
+ source before defining a new varray type for a C type in an extension—it
+ may cause conflicts.
+ Note that 
+\family typewriter
+varray.h
+\family default
+ defines varrays for 
+\family typewriter
+char
+\family default
+, 
+\family typewriter
+int
+\family default
+, 
+\family typewriter
+double
+\family default
+ and 
+\family typewriter
+ptr_diff
+\family default
+; value.h defines varrays for 
+\family typewriter
+value
+\family default
+.
+ You should not redefine these.
 \end_layout
 
 \begin_layout Section
@@ -2394,8 +2550,28 @@ value customfunction(vm *v, int nargs, value *args);
 \end_layout
 
 \begin_layout Standard
-Your function will be passed an opaque reference to the virtual machine
- 
+Your function will be passed an 
+\emph on
+opaque reference
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+i.e.
+ a pointer of type 
+\family typewriter
+void *
+\family default
+.
+ This is specifically intended to prevent developers from relying on a particula
+r implementation of the virtual machine.
+\end_layout
+
+\end_inset
+
+
+\emph default
+ to the virtual machine 
 \family typewriter
 v
 \family default
@@ -2421,7 +2597,11 @@ MORPHO_GETARG(args, n)
 n
 \family default
 th argument.
- You must return a 
+ You 
+\series bold
+must
+\series default
+ return a 
 \family typewriter
 value
 \family default
@@ -2486,41 +2666,6 @@ value sin_fn(vm *v, int nargs, value *args) {
 \end_layout
 
 \begin_layout Standard
-Morpho C-functions are naturally variadic; if your function is called with
- the wrong number of arguments, you are responsible for raising an error
- as described in Section 
-\begin_inset CommandInset ref
-LatexCommand ref
-reference "sec:Error-handling"
-plural "false"
-caps "false"
-noprefix "false"
-
-\end_inset
-
-.
-\end_layout
-
-\begin_layout Standard
-If you create any new objects in your function, you 
-\series bold
-must
-\series default
- bind them to the virtual machine as described in Section 
-\begin_inset CommandInset ref
-LatexCommand ref
-reference "sec:Memory-management"
-plural "false"
-caps "false"
-noprefix "false"
-
-\end_inset
-
-.
- 
-\end_layout
-
-\begin_layout Standard
 To make the function visible to morpho, call 
 \family typewriter
 builtin_addfunction
@@ -2548,10 +2693,6 @@ sin
 
 \end_inset
 
-
-\end_layout
-
-\begin_layout Standard
 From morpho, the user can then use the new 
 \family typewriter
 sin
@@ -2560,13 +2701,72 @@ sin
  
 \end_layout
 
+\begin_layout Standard
+There are a few important things to note about defining your own 
+\emph on
+morpho
+\emph default
+ C-function.
+ First, these functions are naturally variadic; if your function is called
+ with the wrong number of arguments, you are responsible for raising an
+ error as described in Section 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sec:Error-handling"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+.
+ If you create any new objects in your function, you 
+\series bold
+must
+\series default
+ bind them to the virtual machine as described in Section 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sec:Memory-management"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+.
+ 
+\end_layout
+
+\begin_layout Standard
+You can call 
+\emph on
+morpho
+\emph default
+ code from within your function with certain restrictions, see Section 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sec:Re-entrancy"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+ for details.
+ 
+\end_layout
+
 \begin_layout Subsection
 Optional parameters
 \end_layout
 
 \begin_layout Standard
-Your function may accept optional parameters just as for regular morpho
- functions.
+Your function may accept optional parameters just as regular 
+\emph on
+morpho
+\emph default
+ functions do.
  The library function 
 \family typewriter
 builtin_options
@@ -2699,22 +2899,35 @@ value opt_fn(vm *v, int nargs, value *args) {
 
 \end_inset
 
-Symbols for the optional parameters must be declared in your initialization
- function by calling 
+Symbols for the optional parameters 
+\series bold
+must
+\series default
+ be declared in your extension's initialization function by calling 
 \family typewriter
 builtin_internsymbolascstring
 \family default
-.
- These are typically tracked in a global variable.
+; this is for performance reasons and enables the runtime to detect optional
+ arguments.
+ You must keep a record of the returned value; typically this is done in
+ a global variable (
+\family typewriter
+fnoption1
+\family default
+ and 
+\family typewriter
+fnoption2
+\family default
+ in the example above).
  
 \end_layout
 
 \begin_layout Standard
-You call 
+In your function implementation, you call 
 \family typewriter
 builtin_options
 \family default
- with the arguments passed to your function, 
+ with, 
 \family typewriter
 v
 \family default
@@ -2726,8 +2939,9 @@ nargs
 \family typewriter
 args
 \family default
-, an pointer of type int* to receive the number of fixed parameters detected,
- and then a list of optional parameters and their associated symbols.
+ as passed to you by the runtime, an pointer of type int* to receive the
+ number of fixed parameters detected, and then a list of optional parameters
+ and their associated symbols.
  If 
 \family typewriter
 builtin_options
@@ -2752,16 +2966,33 @@ false
 \family default
  on failure.
  Where this occurs, you must return as quickly as possible from your function,
- returning 
+ cleaning up any memory you allocated that has not been bound to the virtual
+ machine as per Section 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sec:Memory-management"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+ and returning 
 \family typewriter
 MORPHO_NIL
 \family default
 .
- 
 \end_layout
 
 \begin_layout Section
 Implementing a new class
+\begin_inset CommandInset label
+LatexCommand label
+name "sec:New-Class"
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -2773,7 +3004,7 @@ morpho
 \end_layout
 
 \begin_layout Enumerate
-The object uses an 
+The new class reuses 
 \family typewriter
 objectinstance
 \family default
@@ -2790,14 +3021,18 @@ objectinstance_setproperty
 .
  The user may subclass a class implemented in this way and override method
  definitions.
- Many functionals use this strategy, as it's lightweight.
+ Many functionals use this strategy, as it's very lightweight.
  It does have some limitations: you may 
 \series bold
 not
 \series default
- use this strategy if you need to store bare pointers (i.e.
- those that refer to something that isn't an object) or if you want the
- very fastest possible performance since property access is relatively expensive.
+ use this strategy if you need to store C pointers that refer to something
+ that isn't an 
+\family typewriter
+object
+\family default
+ or if you want the very fastest possible performance since property access
+ is relatively expensive.
  
 \end_layout
 
@@ -2812,7 +3047,7 @@ noprefix "false"
 
 \end_inset
 
-) which can include arbitrary information.
+) which can include arbitrary information including C pointers to non-objects.
  You then create what is referred to as a 
 \emph on
 veneer class, 
@@ -2833,8 +3068,22 @@ morpho
 \emph default
  class that that defines user-accessible methods.
  While more cumbersome, this pattern provides the fastest possible performance,
- but object properties are not visible to the user and the resulting class
- cannot be subclassed by the user.
+ but object properties are 
+\emph on
+not
+\emph default
+ visible to the user and the resulting class cannot be subclassed by the
+ user.
+ The 
+\emph on
+morpho
+\emph default
+ source uses this pattern extensively: many examples are to be found in
+ 
+\family typewriter
+src/classes/
+\family default
+ in the git repository; the List or Range classes are good places to look.
  
 \end_layout
 
@@ -2857,7 +3106,7 @@ value mymethod(vm *v, int nargs, value *args);
 \end_inset
 
 and are written in the same way.
- From within a method, the macro 
+ From within a method definition, the macro 
 \family typewriter
 MORPHO_SELF(args)
 \family default
@@ -3002,13 +3251,56 @@ name "sec:NewObjectType"
 \end_layout
 
 \begin_layout Standard
-The morpho object system is readily extensible.
- Many data structures, strings, lists, dictionaries, matrices, etc.
+Objects are heap-allocated data structures with a special format that enables
+ the 
+\emph on
+morpho
+\emph default
+ runtime to infer type information.
+ Other than the simple types that are held in a value, most 
+\emph on
+morpho
+\emph default
+ data structures including strings, lists, dictionaries, matrices, etc.
  are implemented as objects.
- To illustrate what's necessary to create a new one, in this section, we'll
- implement a new objectfoo type.
+ The 
+\emph on
+morpho
+\emph default
+ object system is readily extensible, and it's easy to create new ones.
+ Note that objects are not necessarily visible to the user, to facilitate
+ this it's also necessary to define what is known as a 
+\emph on
+veneer class
+\emph default
+ (Section 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sec:Veneer-classes"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+ which defines methods that can be called from 
+\emph on
+morpho
+\emph default
+ code).
+ 
+\end_layout
+
+\begin_layout Standard
+To illustrate the definition and implementation of a new object type, in
+ this section we'll implement a new objectfoo type.
  It's a good idea to declare new object types in a separate pair of implementati
 on (.c) and header (.h) files.
+ Many similar examples are to be found in 
+\family typewriter
+src/classes
+\family default
+ in the morpho source.
  
 \end_layout
 
@@ -3069,7 +3361,11 @@ typedef struct {
 
 \end_inset
 
-Note that we start the structure declaration with a field of type 
+Note that we 
+\series bold
+must 
+\series default
+start the structure declaration with a field of type 
 \family typewriter
 object
 \family default
@@ -3091,8 +3387,8 @@ object
 morpho
 \emph default
  uses this field to detect the object type.
- The remainder of the structure can be anything; here we just declare the
- value.
+ The remainder of the structure can contain arbitrary information; here
+ we just declare the value.
  
 \end_layout
 
@@ -3156,7 +3452,11 @@ status open
 
 \begin_layout Standard
 In the implementation file, we will create a global variable to hold the
- objectfootype; this will be filled in by initialization code.
+ 
+\family typewriter
+objectfootype
+\family default
+; this will be filled in by initialization code.
  
 \begin_inset listings
 inline false
@@ -3247,13 +3547,19 @@ object_foofromllist
 
 \begin_layout Standard
 To interface our new object type with the morpho runtime, we need to define
- several functions: 
+ several functions.
+ Where these are listed as optional, they can be set to 
+\family typewriter
+NULL
+\family default
+ in the definition.
+ 
 \end_layout
 
 \begin_layout Itemize
 
 \family typewriter
-objectfoo_printfn (object *obj)
+void objectfoo_printfn (object *obj, void *v)
 \family default
  Called by 
 \emph on
@@ -3284,18 +3590,29 @@ noprefix "false"
 
 ).
  
+\emph on
+Note that in Morpho 0.6 and higher the virtual machine is passed as an argument,
+ and you should use 
+\family typewriter
+\emph default
+morpho_printf
+\family default
+\emph on
+ to print to morpho's output stream.
+\emph default
+
 \begin_inset listings
 inline false
 status open
 
 \begin_layout Plain Layout
 
-void objectfoo_printfn (object *obj) {
+void objectfoo_printfn (object *obj, void *v) {
 \end_layout
 
 \begin_layout Plain Layout
 
-	printf(
+	morpho_printf(v, 
 \begin_inset Quotes eld
 \end_inset
 
@@ -3319,7 +3636,7 @@ void objectfoo_printfn (object *obj) {
 \begin_layout Itemize
 
 \family typewriter
-objectfoo_freefn(object *obj)
+void objectfoo_freefn(object *obj)
 \family default
  [Optional] Called when the object is about to be free'd, providing an opportuni
 ty to free any private data, i.e.
@@ -3353,7 +3670,7 @@ MORPHO_ALLOC
 \begin_layout Itemize
 
 \family typewriter
-objectfoo_markfn(object *obj, void *v)
+void objectfoo_markfn(object *obj, void *v)
 \family default
  [Optional] Called by the garbage collector to find references to other
  objects.
@@ -3416,7 +3733,7 @@ void objectfoo_markfn (object *obj) {
 \family typewriter
 size_t objectfoo_sizefn(object *obj)
 \family default
-Should return the size of the object.
+ Should return the size of the object.
  You 
 \series bold
 should
@@ -3425,14 +3742,15 @@ should
 \series bold
 should not
 \series default
- include the size of any references.
+ include the size of anything in a value that has been passed to you or
+ bound to the virtual machine.
  Hence, we simply return the size of the struct.
  If the estimates returned by this function are incorrect, 
 \emph on
 morpho
 \emph default
  programs using your object will still most likely run correctly, but the
- garbage collection may run either too frequently, impacting performance,
+ garbage collector may run either too frequently, impacting performance,
  or not frequently enough, potentially causing the program to run out of
  memory.
  
@@ -3448,6 +3766,127 @@ void objectfoo_sizefn (object *obj) {
 \begin_layout Plain Layout
 
 	return sizeof(objectfoo); 
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+hash objectfoo_hashfn(object *obj)
+\family default
+ [Optional] Called by the dictionary data structure to compute a hash from
+ the object.
+ You 
+\series bold
+must only
+\series default
+ define this if your object type is immutable, i.e.
+ cannot be modified once created.
+ If this were the case for an objectfoo, we could then hash the contents
+ using one of the functions in 
+\family typewriter
+src/datastructures/dictionary.h
+\family default
+.
+ Note that if you define this function, you must also define a comparison
+ function that compares the contents of the object.
+ 
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+hash objectfoo_hashfn (object *obj) {
+\end_layout
+
+\begin_layout Plain Layout
+
+	return dictionary_hashvalue( ((objectfoo *) obj)->foo ); 
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+int objectfoo_cmpfn(object *a, object *b)
+\family default
+ [Optional if no hash function] Called by the morpho runtime to test for
+ equality between two objects.
+ If this isn't defined, 
+\emph on
+morpho
+\emph default
+ assumes by default that two values are only equal if they are identical
+ (i.e.
+ refer to the same object).
+ This function should return one of 
+\family typewriter
+MORPHO_EQUAL
+\family default
+, 
+\family typewriter
+MORPHO_NOTEQUAL
+\family default
+, 
+\family typewriter
+MORPHO_BIGGER
+\family default
+ or 
+\family typewriter
+MORPHO_SMALLER
+\family default
+ depending on whether an ordered comparison is meaningful or not.
+ The library function 
+\family typewriter
+morpho_comparevalue
+\family default
+ is available to compare two values.
+ 
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+int objectfoo_cmpfn(object *a, object *b) {
+\end_layout
+
+\begin_layout Plain Layout
+
+	objectfoo *af = (objectfoo *) a; 
+\end_layout
+
+\begin_layout Plain Layout
+
+	objectfoo *bf = (objectfoo *) b; 
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+	return morpho_comparevalue(af->foo, bf->foo); 
 \end_layout
 
 \begin_layout Plain Layout
@@ -3495,7 +3934,17 @@ objecttypedefn objectfoodefn = {
 
 \begin_layout Plain Layout
 
-    .sizefn=objectfoo_sizefn
+    .sizefn=objectfoo_sizefn,
+\end_layout
+
+\begin_layout Plain Layout
+
+	.hashfn=objectfoo_hashfn, // Or NULL if we want a mutable type
+\end_layout
+
+\begin_layout Plain Layout
+
+	.cmpfn=objectfoo_cmpfn // Or NULL to prevent deep comparisons
 \end_layout
 
 \begin_layout Plain Layout
@@ -3543,7 +3992,7 @@ name "sec:Veneer-classes"
 \end_layout
 
 \begin_layout Standard
-A veneer class is a morpho class definition that the runtime refers to whenever
+A veneer class is a morpho class definition that the runtime uses whenever
  the corresponding object is encountered.
  Such a class provides a 
 \begin_inset Quotes eld
@@ -3553,9 +4002,22 @@ veneer
 \begin_inset Quotes erd
 \end_inset
 
- over a regular morpho object that enables the user to interact with it
- like any other object.
- For example, if morpho tries to add a float to an 
+ over a regular 
+\emph on
+morpho
+\emph default
+ object that enables the user to interact with it like any other object.
+ If the user calls 
+\family typewriter
+clone()
+\family default
+ on a value that contains an 
+\family typewriter
+objectmatrix,
+\family default
+ morpho uses the veneer class to select the method to call.
+ This can sometimes happen implicitly: For example, if morpho tries to add
+ a float to an 
 \family typewriter
 objectmatrix
 \family default
@@ -3576,35 +4038,99 @@ addr
 \end_layout
 
 \begin_layout Standard
-Veneer classes are defined as for regular classes (see the preceding section).
+Veneer classes are defined in the same way as regular C classes.
  The programmer must provide method implementations, define the class and
- register it with the runtime.
- To register a class as a veneer class, one more step is required in initializat
-ion code: 
+ register it with the runtime as described in Section 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sec:New-Class"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+.
+ The only difference, of course, is that 
+\family typewriter
+MORPHO_SELF
+\family default
+ contains a reference to the specific object type.
+ Most 
+\emph on
+morpho
+\emph default
+ data structures have veneer classes, and many examples can be found in
+ 
+\family typewriter
+src/classes/
+\family default
+ in the git repository; 
+\family typewriter
+list.c
+\family default
+ and 
+\family typewriter
+range.c
+\family default
+ are good places to look.
+ These files follow a common pattern: they begin with the object definition,
+ then provide C functions to work with the new object type, and then define
+ the veneer class.
+ We recommend extensions adopt a similar pattern for new object types and
+ associated veneer classes.
+ 
+\end_layout
+
+\begin_layout Standard
+To register a class as a veneer class, one additional step is required in
+ initialization code.
+ For example, in 
+\family typewriter
+list_initialize
+\family default
+ in the file 
+\family typewriter
+src/classes/list.c
+\family default
+ is the line:
 \begin_inset listings
 inline false
 status open
 
 \begin_layout Plain Layout
 
-object_setveneerclass(OBJECT_MATRIX, matrixclass);
+object_setveneerclass(OBJECT_LIST, listclass);
 \end_layout
 
 \end_inset
 
-which registers the class object 
+which registers the class 
 \family typewriter
 matrixclass
 \family default
- (this is the return value of 
+ (this was the return value of a previous call to 
 \family typewriter
 builtin_addclass
 \family default
 ) as the veneer class for objects of type 
 \family typewriter
-OBJECT_MATRIX
+OBJECT_LIST
 \family default
 .
+ The user therefore sees an 
+\family typewriter
+objectlist
+\family default
+ referred to in a value as a 
+\emph on
+morpho
+\emph default
+ 
+\family typewriter
+List
+\family default
+ and can interact with it accordingly.
  
 \end_layout
 
@@ -3619,6 +4145,249 @@ name "sec:Error-handling"
 
 \end_layout
 
+\begin_layout Standard
+When an error occurs, you can report this to the user by setting the virtual
+ machine to an error state.
+ 
+\end_layout
+
+\begin_layout Standard
+In order to do so, it's first necessary to define the error.
+ 
+\emph on
+Morpho
+\emph default
+ errors are defined by a 
+\emph on
+tag
+\emph default
+, a short label that is used to identify the error and a detailed 
+\emph on
+message
+\emph default
+ for the user.
+ The separation of tags from messages permits locale-dependent display of
+ error messages to be implemented in future versions of 
+\emph on
+morpho
+\emph default
+.
+ The tag and a default message are usually defined as macros in a header
+ file.
+ For example, this common error comes from 
+\family typewriter
+src/datastructures/error.h
+\family default
+:
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+#define VM_OUTOFBOUNDS                    "IndxBnds"
+\end_layout
+
+\begin_layout Plain Layout
+
+#define VM_OUTOFBOUNDS_MSG                "Index out of bounds."
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+To define the error with the morpho runtime, you need a line like this in
+ your initialization function:
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+morpho_defineerror(VM_OUTOFBOUNDS, ERROR_HALT, VM_OUTOFBOUNDS_MSG);
+\end_layout
+
+\end_inset
+
+The first argument is the tag and the last is the message.
+ The second argument is the error type, which can be any of:—
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+ERROR_WARNING
+\family default
+ Indicates a warning, rather than an error.
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+ERROR_HALT
+\family default
+ Indicates an error that should halt execution.
+ 
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+ERROR_LEX
+\family default
+ Indicates a lexing error; used by lex.c/.h [Use only if extending the lexer]
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+ERROR_PARSE 
+\family default
+Indicates a parser error; used by parse.c/.h [Use only if extending the parser]
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+ERROR_COMPILE 
+\family default
+Indicates a compiler error.
+ [Use only if extending the compiler]
+\end_layout
+
+\begin_layout Standard
+The values 
+\family typewriter
+ERROR_USER
+\family default
+, 
+\family typewriter
+ERROR_DEBUGGER
+\family default
+ and 
+\family typewriter
+ERROR_EXIT
+\family default
+ are reserved for use by the runtime.
+ 
+\end_layout
+
+\begin_layout Standard
+When the error occurs in your code, you can then report this fact by calling
+ 
+\family typewriter
+morpho_runtimerror
+\family default
+:
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+morpho_runtimeerror(v, VM_OUTOFBOUNDS);
+\end_layout
+
+\end_inset
+
+You provide the virtual machine reference that was passed to you and the
+ error tag.
+ Use any existing error tags defined in the morpho header files rather than
+ duplicating the error.
+ 
+\end_layout
+
+\begin_layout Standard
+Once you have reported the error to the VM, your function should return
+ as swiftly as possible, returning 
+\family typewriter
+MORPHO_NIL
+\family default
+.
+ You are responsible for freeing any newly created objects or other allocated
+ memory, and undoing side-effects like open files unless you have already
+ registered these with the virtual machine via 
+\family typewriter
+morpho_bindobjects
+\family default
+.
+ 
+\end_layout
+
+\begin_layout Standard
+In come circumstances, your program may detect some condition that, while
+ not an error that would prevent further progress, nonetheless should be
+ raised with the user.
+ An example scenario might be where a numerical problem is poorly conditioned,
+ and hence the solution is likely to be of poor quality.
+ Morpho provides an analogous function to raise a given error as a warning.
+ You can use this for any error, even if it was not declared with 
+\family typewriter
+ERROR_WARNING
+\family default
+; errors declared with 
+\family typewriter
+ERROR_WARNING
+\family default
+ are always raised as warnings.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+morpho_runtimewarning(v, VM_OUTOFBOUNDS);
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+If your program detects a state that arises from incorrect programming,
+ you may use the UNREACHABLE macro (see Section 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "subsec:Unreachable-code"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+) to terminate 
+\emph on
+morpho
+\emph default
+ immediately.
+ An example where this might be desirable is if an inconsistency or impossible
+ condition is detected in one of your data structure
+\emph on
+s.
+ 
+\emph default
+Use this primarily for your own debugging purposes; the user should never
+ see an internal consistency error.
+ 
+\end_layout
+
 \begin_layout Section
 Memory management
 \begin_inset CommandInset label
@@ -3631,10 +4400,14 @@ name "sec:Memory-management"
 \end_layout
 
 \begin_layout Standard
-The morpho runtime provides garbage collection: the user need not worry
- about deallocating any object.
+The 
+\emph on
+morpho
+\emph default
+ runtime provides garbage collection: the user need not worry about deallocating
+ any object.
  The actual garbage collector implementation is intentionally opaque and
- is likely a target of future improvement.
+ a target of continuous improvement.
  The C programmer typically interacts with the garbage collector in two
  ways: First, new object types must provide a markfunction to enable the
  garbage collector to see any 
@@ -3652,13 +4425,21 @@ noprefix "false"
 \end_inset
 
 .
- Second, where new objects are created and returned to the user, these should
- typically be bound to a virtual machine as will be described below.
+ Second, where new objects are created 
+\series bold
+and returned to the user
+\series default
+ these should typically be bound to a virtual machine as will be described
+ below.
  
 \end_layout
 
 \begin_layout Standard
-Morpho uses the following model for memory management.
+
+\emph on
+Morpho
+\emph default
+ uses the following model for memory management.
  Generic blocks of memory can be allocated, free'd and reallocated using
  the following macros: 
 \begin_inset listings
@@ -3682,23 +4463,37 @@ MORPHO_REALLOC(x, size)
 
 \end_inset
 
-If you allocate memory using 
+If your code allocates memory using 
 \family typewriter
 MORPHO_MALLOC
 \family default
 , you are responsible for freeing it.
  For example, if you allocate additional memory when an custom object is
  created, you should free it in the appropriate freefn.
+ If you create an 
+\emph on
+object
+\emph default
+, you are responsible for freeing that object by calling 
+\family typewriter
+object_free
+\family default
+.
+\end_layout
+
+\begin_layout Standard
+An important exception occurs when you create an object that is intended
+ for the user to work with.
+ You might return the object from a C function or method, or you might store
+ the object in another data structure that the runtime or user provided
+ you with.
+ In this case, you must tell the virtual machine about the object(s) and
+ the garbage collector then becomes responsible for their management.
  
 \end_layout
 
 \begin_layout Standard
-If you create an object, you are resposible for freeing that object by calling
- 
-\family typewriter
-object_free
-\family default
- unless that object is bound to a virtual machine by calling: 
+To do so, you bind the object(s) to a virtual machine by calling: 
 \end_layout
 
 \begin_layout Standard
@@ -3791,9 +4586,18 @@ essential
 \end_layout
 
 \begin_layout Enumerate
-When calling morpho code from C it is necessary to be careful to ensure
- that bound objects remain visible to the garbage collector or they may
- be incorrectly free'd.
+When creating an object that contains other objects, you must take care
+ to bind all objects at once (or at least bind the outermost objects first)
+ so that the garbage collector can see the interdependency.
+\end_layout
+
+\begin_layout Enumerate
+When calling 
+\emph on
+morpho
+\emph default
+ code from C it is necessary to be careful to ensure that bound objects
+ remain visible to the garbage collector or they may be incorrectly free'd.
  See Section 
 \begin_inset CommandInset ref
 LatexCommand ref
@@ -3820,6 +4624,11 @@ MORPHO_DEBUG_STRESSGARBAGECOLLECTOR
  This forces garbage collection on every bind operation, and will tend to
  cause segmentation faults to occur much sooner after the problematic code
  has executed.
+ There is also a macro 
+\family typewriter
+MORPHO_DEBUG_LOGGARBAGECOLLECTOR
+\family default
+ that logs object creation and destruction that can be of assistance.
  
 \end_layout
 
@@ -3840,9 +4649,89 @@ The morpho virtual machine is
 re-entrant
 \emph default
 , i.e.
- C function and method implementations can call morpho code and re-enter
- the virtual machine.
+ C function and method implementations can themselves call user code written
+ in 
+\emph on
+morpho
+\emph default
+, re-entering the virtual machine to execute it and then making use of the
+ results open return.
+ The API for this is described in this section.
+ Re-entrant calls can be recursive: during such a call, the user's 
+\emph on
+morpho
+\emph default
+ code itself may call back C functions, only limited by the depth of the
+ call stack, which is currently fixed by the macro 
+\family typewriter
+MORPHO_CALLFRAMESTACKSIZE
+\family default
+ in 
+\family typewriter
+build.h
+\family default
+.
+\end_layout
+
+\begin_layout Standard
+In order to use the API, you first need a value that contains a callable
+ object.
+ These could include:
+\end_layout
+
+\begin_layout Itemize
+A C function, as returned by 
+\family typewriter
+builtin_addfunction, 
+\family default
+and contained in an 
+\family typewriter
+objectbuiltinfunction
+\family default
+.
+\end_layout
+
+\begin_layout Itemize
+A morpho function contained in an 
+\family typewriter
+objectfunction
+\family default
+.
+\end_layout
+
+\begin_layout Itemize
+An invocation on an object, which contains both method and receiver, and
+ is contained in an 
+\family typewriter
+objectinvocation
+\family default
+.
+\end_layout
+
+\begin_layout Itemize
+A closure contained in an 
+\family typewriter
+objectclosure
+\family default
+.
  
+\end_layout
+
+\begin_layout Standard
+All of these are called in the same way, and the runtime automatically takes
+ care of any setup necessary to execute the call.
+ You can check whether a value contains a callable object with the macro
+ 
+\family typewriter
+MORPHO_ISCALLABLE()
+\family default
+.
+ 
+\end_layout
+
+\begin_layout Standard
+Once you have a callable object, you can have the virtual machine execute
+ it with given parameters by calling:
 \end_layout
 
 \begin_layout Standard
@@ -3855,25 +4744,201 @@ status open
 bool morpho_call(vm *v, value fn, int nargs, value *args, value *ret);
 \end_layout
 
+\end_inset
+
+This function requires a list of arguments, given as a C array of values.
+ You must check the return value: If the call is successful, 
+\family typewriter
+morpho_call
+\family default
+ returns 
+\family typewriter
+true
+\family default
+ and the value 
+\family typewriter
+ret
+\family default
+ is filled out.
+ Otherwise, the virtual machine is returning in an error state and you should
+ return as quickly as possible.
+ 
+\end_layout
+
+\begin_layout Standard
+Another common scenario is that you wish to invoke a method on a given object.
+ You can do so with 
+\family typewriter
+morpho_invoke
+\family default
+:
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+bool morpho_invoke(vm *v, value obj, value method, int nargs, value *args,
+ value *ret);
+\end_layout
+
+\end_inset
+
+The method label should be given in the parameter method, and the parameters
+ work similarly to 
+\family typewriter
+morpho_call
+\family default
+.
+ 
+\end_layout
+
+\begin_layout Standard
+If you wish to call a method on the same object many times with different
+ parameters, you can avoid the cost of method lookup by getting a callable
+ invocation from the runtime using the function,
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
 \begin_layout Plain Layout
 
 bool morpho_lookupmethod(value obj, value label, value *method);
 \end_layout
+
+\end_inset
+
+and supplying the resulting value in 
+\family typewriter
+method
+\family default
+ as the input to 
+\family typewriter
+morpho_call
+\family default
+.
+ Note that you must check to ensure 
+\family typewriter
+morpho_lookupmethod
+\family default
+ was successful; it will return 
+\family typewriter
+false
+\family default
+ if the method wasn't found for example.
+ 
+\end_layout
+
+\begin_layout Standard
+You can count the number of fixed parameters for a callable object by using,
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
 
 \begin_layout Plain Layout
 
 bool morpho_countparameters(value f, int *nparams);
 \end_layout
 
-\begin_layout Plain Layout
-
-bool morpho_invoke(vm *v, value obj, value method, int nargs, value *args,
- value *ret); 
-\end_layout
-
 \end_inset
 
 
+\end_layout
+
+\begin_layout Subsection
+Restrictions on re-entrant code
+\end_layout
+
+\begin_layout Standard
+When the virtual machine is entered, arbitrary code may be executed that
+ can reconfigure the state of the runtime environment.
+ As a result, functions that use the reentrant API are subject to a number
+ of restrictions so that they do not refer to information that is no longer
+ valid across a call to 
+\family typewriter
+morpho_call
+\family default
+ or 
+\family typewriter
+morpho_invoke
+\family default
+.
+ 
+\end_layout
+
+\begin_layout Itemize
+The value of the 
+\family typewriter
+args
+\family default
+ pointer passed to your function may no longer be valid after a re-entrant
+ call.
+ You 
+\emph on
+must
+\emph default
+ obtain all parameters using 
+\family typewriter
+MORPHO_GETARG
+\family default
+ before making the call.
+ 
+\end_layout
+
+\begin_layout Itemize
+You must use 
+\family typewriter
+morpho_bindobjects
+\family default
+ carefully.
+ If you make a re-entrant call after using 
+\family typewriter
+morpho_bindobjects
+\family default
+, it is possible that the garbage collector will run without being able
+ to 
+\begin_inset Quotes eld
+\end_inset
+
+see
+\begin_inset Quotes erd
+\end_inset
+
+ a valid reference to the object held in your C code (the garbage collector
+ cannot check the C stack, for example) and will erroneously destroy the
+ object leading, ultimately, to a segfault.
+ To avoid this, either use 
+\family typewriter
+morpho_bindobjects
+\family default
+ after making all re-entrant calls, or call 
+\family typewriter
+morpho_retainobjects
+\family default
+ to ensure they're retained across a re-entrant call.
+ If you do the latter, you 
+\series bold
+must
+\series default
+ call 
+\family typewriter
+morpho_releaseobjects
+\family default
+ with the handle returned by 
+\family typewriter
+morpho_retainobjects
+\family default
+ before your code returns.
 \end_layout
 
 \begin_layout Part
@@ -3893,10 +4958,43 @@ libmorpho
 \end_layout
 
 \begin_layout Standard
-The morpho source code has been significantly reorganized in version 0.6
- to improve its modularity and reusability.
+The 
+\emph on
+morpho
+\emph default
+ source code has been significantly reorganized in version 0.6 to improve
+ its modularity and reusability.
+ 
+\emph on
+Morpho
+\emph default
+ has been split into a dynamic library, 
+\emph on
+libmorpho
+\emph default
+, that provides the compiler, virtual machine and runtime, and is designed
+ to be embeddable in other applications.
+ The command line interface is now provided by a separate program, 
+\emph on
+morpho-cli
+\emph default
+, and other kinds of interface may be provided in future
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+A prototype Jupyter interface exists, for example.
+\end_layout
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+The libmorpho source is in the src folder within the git repository.
  Each file is intended to provide one piece of functionality, and is organized
- into folders as follows:—
+ into subfolders as follows:—
 \end_layout
 
 \begin_layout Standard
@@ -4060,7 +5158,9 @@ datastructures
 \begin_inset Text
 
 \begin_layout Plain Layout
-Low level data structures used by morpho
+Low level data structures used by 
+\emph on
+morpho.
 \end_layout
 
 \end_inset
@@ -5354,7 +6454,120 @@ morpho
 \end_layout
 
 \begin_layout Section
+Compiling 
+\emph on
+morpho
+\end_layout
+
+\begin_layout Standard
+As of version 0.6, 
+\emph on
+morpho
+\emph default
+ is now compiled with 
+\begin_inset CommandInset href
+LatexCommand href
+name "cmake"
+target "https://cmake.org"
+literal "false"
+
+\end_inset
+
+, an automated build utility, facilitating much improved cross-platform
+ building.
+ To install from source, clone the git repository to a convenient place,
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+git clone https://github.com/Morpho-lang/morpho-libmorpho.git
+\end_layout
+
+\end_inset
+
+and then 
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+cd morpho-libmorpho
+\end_layout
+
+\begin_layout Plain Layout
+
+mkdir build
+\end_layout
+
+\begin_layout Plain Layout
+
+cd build
+\end_layout
+
+\begin_layout Plain Layout
+
+cmake -DCMAKE_BUILD_TYPE=Release ..
+ 
+\end_layout
+
+\begin_layout Plain Layout
+
+make install 
+\end_layout
+
+\end_inset
+
+You may need to use 
+\family typewriter
+sudo make install
+\family default
+.
+ 
+\end_layout
+
+\begin_layout Standard
+You can also build project files for various IDEs.
+ For example you can create an Xcode project by using 
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+cmake -GXcode ..
+ 
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
 Coding standards
+\end_layout
+
+\begin_layout Standard
+The 
+\emph on
+morpho
+\emph default
+ source, being somewhat large (around 40k lines as of 0.6), aims to obey
+ the following coding standards, which may be refined as the project evolves.
+ 
 \end_layout
 
 \begin_layout Subsection
@@ -5580,8 +6793,21 @@ Where appropriate, mark unreachable code with
 UNREACHABLE(x)
 \family default
 .
- The parameter of this macro is a short static char describing where the
- unreachable code is.
+ The parameter of this macro is a short 
+\family typewriter
+static char
+\family default
+ that should explain to the reader where the unreachable code is to be found
+ in the source.
+ The morpho virtual machine immediately halts and reports an 
+\begin_inset Quotes eld
+\end_inset
+
+Internal consistency error:
+\begin_inset Quotes erd
+\end_inset
+
+ followed by your explanation.
  
 \end_layout
 
@@ -5595,6 +6821,23 @@ In this section we note specific C99 features used in the implementation
 \emph on
 Morpho
 \emph default
+.
+ 
+\end_layout
+
+\begin_layout Itemize
+We use the 
+\family typewriter
+bool
+\family default
+ type and
+\family typewriter
+ true
+\family default
+ and 
+\family typewriter
+false
+\family default
 .
  
 \end_layout
@@ -5688,9 +6931,10 @@ Virtual machine structure
 \end_layout
 
 \begin_layout Standard
-The virtual machine operates on a progam which comprises a sequence of instructi
-ons, described in subsequent sections, that perform various functions.
- While running the program, the VM maintains the following state: 
+The virtual machine operates on a progam that comprises a sequence of instructio
+ns, described in subsequent sections, which perform various functions.
+ While running the program, the VM maintains (at least) the following state:
+ 
 \end_layout
 
 \begin_layout Itemize
@@ -5722,7 +6966,11 @@ register window
 \emph default
 .
  Because morpho instructions can refer to any available register, not just
- the top of the stack, morpho's VM is a 
+ the top of the stack, 
+\emph on
+morpho
+\emph default
+'s VM is a 
 \emph on
 register machine
 \emph default
@@ -6177,10 +7425,8 @@ This permits up to 64 separate opcodes and up to 256 individually addressable
  registers per frame.
  Parameter A denotes the register that is used to store the result of the
  operation, or more generally the register that is affected.
- Operations B and C are used to denote the input registers.
- Additionally, a single bit flag (Bc and Cc) can be set for each input register.
- These are used, for example, to select between loading from a register
- or from the current frame's constant table.
+ Parameters B and C are used to denote the input registers.
+ Larger operands are possible in the last three instruction formats.
  
 \end_layout
 
@@ -7005,7 +8251,11 @@ Returns from the current function
 \begin_inset Text
 
 \begin_layout Plain Layout
-If parameter A>0, register b is returned
+If parameter A>0, register b is returned, otherwise 
+\family typewriter
+MORPHO_NIL
+\family default
+.
 \end_layout
 
 \end_inset
@@ -7760,7 +9010,10 @@ When a function or method call takes place, the VM:
 \end_layout
 
 \begin_layout Enumerate
-Records the program counter, register index and stack size in the current
+Records the program counter, register index and stack size in the 
+\emph on
+current
+\emph default
  call frame.
  
 \end_layout
@@ -7777,13 +9030,11 @@ If the called object is a closure, pulls out the function to be called and
 \end_layout
 
 \begin_layout Enumerate
-Records the function to be called.
- 
+Records the function to be called in the new call frame.
 \end_layout
 
 \begin_layout Enumerate
-Sets up the constant table.
- 
+Sets up the constant table in the new call frame.
 \end_layout
 
 \begin_layout Enumerate
@@ -7793,7 +9044,7 @@ Advances the register window and clears the contents of registers to be
 \end_layout
 
 \begin_layout Enumerate
-Register r0 contains either the function object OR the value of 
+Sets register r0 to contain either the function object OR the value of 
 \family typewriter
 self
 \family default
@@ -7802,7 +9053,7 @@ self
 \end_layout
 
 \begin_layout Enumerate
-Registers r1 onwards contain the arguments of the function.
+Sets register r1 onwards to contain the arguments of the function.
  
 \end_layout
 
@@ -7811,16 +9062,13 @@ Moves the program counter to the entry point of the function.
  
 \end_layout
 
-\begin_layout Section
-Methods
-\end_layout
-
 \begin_layout Standard
-Methods are similar to functions, except that 
+Method calls are identical to function calls, except that 
 \emph on
 r0
 \emph default
  contains the object.
+ Invocations are unpacked before calling.
  
 \end_layout
 
@@ -7884,8 +9132,12 @@ morpho_call
 morpho_call
 \family default
  returns false).
- The calling C function should check for this case and either handle the
- error itself or exit as quickly as possible.
+ The calling C function 
+\series bold
+must
+\series default
+ check for this case and either handle the error itself or exit as quickly
+ as possible.
  If the error isn't handled, once the intermediate C function returns, the
  outer VM that called it will detect the error and resume the search for
  an error handler.
@@ -7941,9 +9193,22 @@ parser
 .
  These two components are in 
 \family typewriter
+lex.c/.h 
+\family default
+and 
+\family typewriter
 parse.c/.h
 \family default
 .
+ Both of these elements can adapted to parse things other than 
+\emph on
+morpho
+\emph default
+ code; see 
+\family typewriter
+json.c/.h
+\family default
+ for an example of how this is done for the JSON interchange language.
  
 \end_layout
 
@@ -8019,7 +9284,8 @@ Extending the compiler
 \end_layout
 
 \begin_layout Standard
-This section provides a very brief guide to how the compiler may be extended.
+This section provides a very brief guide to how the lexer, parser and compiler
+ may be extended.
  When modifying the compiler, it's a good idea to do so in the order suggested
  by Fig.
  
@@ -8048,269 +9314,7 @@ MORPHO_DEBUG_DISPLAYSYNTAXTREE
 \end_layout
 
 \begin_layout Subsection
-New token types 
-\end_layout
-
-\begin_layout Standard
-New token types (for example, for a new operator or keyword) can be implemented
- by adding a new entry into the 
-\family typewriter
-tokentype
-\family default
- enum in 
-\family typewriter
-parse.h
-\family default
-.
- It is imperative to make a corresponding entry into the parser definition
- table (see 
-\family typewriter
-parserule rules[]
-\family default
- in 
-\family typewriter
-parse.c
-\family default
-), even if the token type is marked 
-\family typewriter
-UNUSED
-\family default
- for now.
- The overall order of token types isn't significant, but it's essential
- that these two structures match.
- You will also need to modify 
-\family typewriter
-cli.c
-\family default
- as there is a parallel table 
-\family typewriter
-cli_tokencolors
-\family default
- describing how to syntax color different token types.
- 
-\end_layout
-
-\begin_layout Standard
-You should then modify the lexer to generate the token.
- Tokens are identified from the initial character in 
-\family typewriter
-lex()
-\family default
- and functions that it calls.
- New reserved words require modifying 
-\family typewriter
-lex_symboltype
-\family default
-.
- Modifications to literals require modifying 
-\family typewriter
-lex_string
-\family default
- or 
-\family typewriter
-lex_number
-\family default
-.
- Once a token is identified, it is recorded by calling 
-\family typewriter
-lex_recordtoken
-\family default
-.
- 
-\end_layout
-
-\begin_layout Subsection
-Parser
-\end_layout
-
-\begin_layout Standard
-You now need to create a parse rule, or edit an existing one if appropriate,
- to parse the new token type.
- Parse functions all have the form 
-\begin_inset listings
-inline false
-status open
-
-\begin_layout Plain Layout
-
-syntaxtreeindx parse_MY(compiler *c)
-\end_layout
-
-\end_inset
-
-and call:
-\end_layout
-
-\begin_layout Enumerate
-
-\family typewriter
-parse_advance
-\family default
- and 
-\family typewriter
-parse_consume
-\family default
- to obtain tokens.
-\end_layout
-
-\begin_layout Enumerate
-
-\family typewriter
-parse_expression
-\family default
- or 
-\family typewriter
-parse_precedence
-\family default
- to parse subexpressions.
- 
-\end_layout
-
-\begin_layout Enumerate
-
-\family typewriter
-parser_addnode
-\family default
- to add nodes to the syntax tree.
- 
-\end_layout
-
-\begin_layout Enumerate
-
-\family typewriter
-parse_error
-\family default
- to record errors.
- 
-\end_layout
-
-\begin_layout Standard
-Once the parse rule is created, it may be included in the parser definition
- table (see 
-\family typewriter
-parserule rules[]
-\family default
- in 
-\family typewriter
-parse.c
-\family default
-) or called from another function.
- New operators, for example, are typically inserted directly into the defintion
- table, and macros are available to denote the token as 
-\family typewriter
-PREFIX
-\family default
-, 
-\family typewriter
-INFIX
-\family default
- or 
-\family typewriter
-MIXFIX
-\family default
-.
- Keywords that introduce a statement, e.g.
- 
-\family typewriter
-var
-\family default
- or 
-\family typewriter
-fn
-\family default
-, require inserting an appropriate text and call into 
-\family typewriter
-parse_statement
-\family default
-.
- 
-\end_layout
-
-\begin_layout Subsection
-Syntax tree
-\end_layout
-
-\begin_layout Standard
-Once the parser has been modified, it may be necessary to create new syntax
- tree node types:
-\end_layout
-
-\begin_layout Enumerate
-Create any new syntaxtreenodetypes necessary.
- A node type is defined by adding a new entry into the 
-\family typewriter
-syntaxtreenodetype
-\family default
- enumerated type definition.
- The order 
-\emph on
-does
-\emph default
- matter: new node types should be grouped with leafs, unary operators or
- operators as is documented in the source.
- It is imperative to make a corresponding entry in the compiler definition
- table (see 
-\family typewriter
-compiler_nodefn noderules[]
-\family default
- in 
-\family typewriter
-compile.c
-\family default
-); it can be marked 
-\family typewriter
-NODE_UNDEFINED
-\family default
- for now.
- As for the parser definition table, it's essential that these structures
- match.
- It's also important to add a corresponding entry into the 
-\family typewriter
-nodedisplay
-\family default
- array in 
-\family typewriter
-syntaxtree.c
-\family default
-; this is used to display syntax trees for debugging purposes.
- 
-\end_layout
-
-\begin_layout Enumerate
-Modify the parse rule generated in the previous section to emit appropriate
- syntax tree nodes.
- 
-\end_layout
-
-\begin_layout Subsection
-Compiler rule
-\end_layout
-
-\begin_layout Enumerate
-Create a compiler rule for any new node types.
- Insert it into the compiler definition table at the corresponding place.
- Compiler rules call 
-\family typewriter
-compiler_nodetobytecode
-\family default
- to compile child nodes, and 
-\family typewriter
-compiler_writeinstruction
-\family default
- to create bytecode.
- Macros are available to encode instructions.
- 
-\end_layout
-
-\begin_layout Enumerate
-Creation of new instruction types is possible (by modifying the VM) but
- strongly discouraged; contact the developers if you have ideas about improved
- VM functionality.
- 
-\end_layout
-
-\begin_layout Section
-The lexer
+Lexer
 \end_layout
 
 \begin_layout Standard
@@ -8409,22 +9413,374 @@ to free any attached data.
  
 \end_layout
 
-\begin_layout Subsection
-Tokens
+\begin_layout Standard
+New token types (for example, for a new operator or keyword) can be implemented
+ by adding a new entry into the enum in 
+\family typewriter
+lex.h
+\family default
+.
+ You 
+\series bold
+must
+\series default
+ make a corresponding entry into the parser definition table (see 
+\family typewriter
+parserule rules[]
+\family default
+ in 
+\family typewriter
+parse.c
+\family default
+), even if the token type is marked 
+\family typewriter
+UNUSED
+\family default
+ for now.
+ The overall order of token types isn't significant.
+ You should then modify the lexer to generate the token.
+ Tokens are identified and generated by the lexer in multiple ways:—
+\end_layout
+
+\begin_layout Itemize
+A preprocessor function gets the first look at a token, and identifies things
+ like symbols and numbers.
+ You can replace this with a custom version.
+ The current preprocessor checks whether symbols match keywords (you can
+ disable this with 
+\family typewriter
+lex_setmatchkeywords
+\family default
+).
+ 
+\end_layout
+
+\begin_layout Itemize
+If the preprocessor function doesn't claim the token, the lexer tries to
+ identify the token from a table of 
+\family typewriter
+tokendefn
+\family default
+'s in 
+\family typewriter
+lex.c
+\family default
+.
+ This is used to identify keywords and operators.
+ You can easily extend the token definition table, or replace it with your
+ own.
+ Each token definition can specify a function to call after the token is
+ identified to perform further processing; this is done to lex strings,
+ for example.
 \end_layout
 
 \begin_layout Standard
-Tokens are a data structure used to demarcate syntactic units in a source
- text.
+You can create custom lexers, entirely replacing morpho tokens.
+ See the JSON parser in 
+\family typewriter
+classes/json.c
+\family default
+ for an example.
+ 
+\end_layout
+
+\begin_layout Standard
+Note that syntax highlighting in the CLI also depends on a 
+\family typewriter
+linedit_colormap
+\family default
+ between token types and colors; you would need to add these there.
  
 \end_layout
 
 \begin_layout Subsection
-Custom lexers
+Parser
 \end_layout
 
-\begin_layout Section
-The parser
+\begin_layout Standard
+The parser implements the Pratt parsing algorithm
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+Pratt, Vaughan.
+ "Top down operator precedence." Proceedings of the 1st Annual ACM SIGACT-SIGPLAN
+ Symposium on Principles of Programming Languages (1973).
+ A very good discussion is also to be found in 
+\begin_inset Flex URL
+status open
+
+\begin_layout Plain Layout
+
+https://journal.stuffwithstuff.com/2011/03/19/pratt-parsers-expression-parsing-mad
+e-easy/
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+.
+ You typically need to create a parse rule, or edit an existing one if appropria
+te, to parse the new token type.
+ Parse functions all have the form 
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+bool parse_MY(compiler *c, void *out)
+\end_layout
+
+\end_inset
+
+and call:
+\end_layout
+
+\begin_layout Enumerate
+
+\family typewriter
+parse_advance
+\family default
+ and 
+\family typewriter
+parse_consume
+\family default
+ to obtain tokens.
+\end_layout
+
+\begin_layout Enumerate
+
+\family typewriter
+parse_expression
+\family default
+ or 
+\family typewriter
+parse_precedence
+\family default
+ to parse subexpressions.
+ 
+\end_layout
+
+\begin_layout Enumerate
+
+\family typewriter
+parser_addnode
+\family default
+ to add nodes to the syntax tree.
+ 
+\end_layout
+
+\begin_layout Enumerate
+
+\family typewriter
+parse_error
+\family default
+ to record errors.
+ 
+\end_layout
+
+\begin_layout Standard
+Once the parse rule is created, it may be included in the parser definition
+ table (see 
+\family typewriter
+parserule rules[]
+\family default
+ in 
+\family typewriter
+parse.c
+\family default
+) or called from another function.
+ New operators, for example, are typically inserted directly into the definition
+ table, and macros are available to denote the token as 
+\family typewriter
+PREFIX
+\family default
+, 
+\family typewriter
+INFIX
+\family default
+ or 
+\family typewriter
+MIXFIX
+\family default
+.
+ Keywords that introduce a statement, e.g.
+ 
+\family typewriter
+var
+\family default
+ or 
+\family typewriter
+fn
+\family default
+, require inserting an appropriate text and call into 
+\family typewriter
+parse_statement
+\family default
+.
+ 
+\end_layout
+
+\begin_layout Standard
+You can create a custom parser by replacing the parser definition table.
+ 
+\end_layout
+
+\begin_layout Subsection
+Syntax tree
+\end_layout
+
+\begin_layout Standard
+Once the parser has been modified, it may be necessary to create new syntax
+ tree node types:
+\end_layout
+
+\begin_layout Enumerate
+Create any new syntaxtreenodetypes necessary.
+ A node type is defined by adding a new entry into the 
+\family typewriter
+syntaxtreenodetype
+\family default
+ enumerated type definition.
+ The order 
+\emph on
+does
+\emph default
+ matter: new node types should be grouped with leafs, unary operators or
+ operators as is documented in the source.
+ It is imperative to make a corresponding entry in the compiler definition
+ table (see 
+\family typewriter
+compiler_nodefn noderules[]
+\family default
+ in 
+\family typewriter
+compile.c
+\family default
+); it can be marked 
+\family typewriter
+NODE_UNDEFINED
+\family default
+ for now.
+ As for the parser definition table, it's essential that these structures
+ match.
+ It's also important to add a corresponding entry into the 
+\family typewriter
+nodedisplay
+\family default
+ array in 
+\family typewriter
+syntaxtree.c
+\family default
+; this is used to display syntax trees for debugging purposes.
+ 
+\end_layout
+
+\begin_layout Enumerate
+Modify the parse rule generated in the previous section to emit appropriate
+ syntax tree nodes.
+ 
+\end_layout
+
+\begin_layout Subsection
+Compiler rule
+\end_layout
+
+\begin_layout Enumerate
+Create a compiler rule for any new node types.
+ Insert it into the compiler definition table at the corresponding place.
+ Compiler rules call 
+\family typewriter
+compiler_nodetobytecode
+\family default
+ to compile child nodes, and 
+\family typewriter
+compiler_writeinstruction
+\family default
+ to create bytecode.
+ Macros are available to encode instructions.
+ 
+\end_layout
+
+\begin_layout Enumerate
+Creation of new instruction types is possible (by modifying the VM) but
+ strongly discouraged; contact the developers if you have ideas about improved
+ VM functionality.
+\end_layout
+
+\begin_layout Chapter
+Debugger
+\end_layout
+
+\begin_layout Standard
+The debugger is a challenging component because it interacts both with the
+ virtual machine—and hence needs to know about its inner workings—and also
+ the user.
+ The overall design of 
+\emph on
+morpho
+\emph default
+ exposes virtual machines as opaque pointers to as much of the code as possible.
+ Code that needs to work directly with the virtual machine must define 
+\family typewriter
+MORPHO_CORE
+\family default
+ and import 
+\family typewriter
+core.h
+\family default
+ and is referred to as 
+\emph on
+privileged
+\emph default
+.
+\end_layout
+
+\begin_layout Standard
+To enforce the separation, we divide debugging into multiple components:—
+\end_layout
+
+\begin_layout Enumerate
+debugannnotations, which are a data structure that encodes annotations about
+ the bytecode, e.g.
+ associating registers with symbols and other metadata.
+ This data structure is in libmorpho in 
+\family typewriter
+datastructures/debugannotation
+\family default
+, and is not privileged.
+ 
+\end_layout
+
+\begin_layout Enumerate
+debugger, defined in debug/debug.c.
+ This data structure maintains the state of the debugger, and provides a
+ debugging API for debugger interfaces.
+ Requests for information are fulfilled using 
+\family typewriter
+morpho_printf
+\family default
+.
+ This code is privileged.
+ 
+\end_layout
+
+\begin_layout Enumerate
+clidebugger, defined in 
+\family typewriter
+morpho-cli
+\family default
+.
+ This implements an interactive REPL interface that allows the user to work
+ with the debugger.
+ It is not privileged, and exclusively works through the debugger API.
+ The interface is described above in part 1.
+ 
 \end_layout
 
 \begin_layout Chapter
