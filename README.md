@@ -2,7 +2,9 @@
 
 # Morpho-devguide
 
-This repository contains the current version of the developer guide for the [morpho](https://github.com/Morpho-lang/morpho) language. Please see the main repository for more information and installation instructions.
+This repository contains the current version of the developer guide for the [morpho](https://github.com/Morpho-lang/morpho) language. Please see the main repository for more information and installation instructions. 
+
+This guide is intended for advanced users and programmers interested in extending or contributing to morpho; new users should instead read the [manual](https://github.com/Morpho-lang/morpho-manual).
 
 The most recent version of the developer guide is available as a PDF document in this repository's root folder.
 
