@@ -1,0 +1,174 @@
+%% LyX 2.3.7 created this file.  For more info, see http://www.lyx.org/.
+%% Do not edit unless you really know what you are doing.
+\documentclass[11pt,oneside,english]{book}
+\usepackage[T1]{fontenc}
+\usepackage{geometry}
+\geometry{verbose,tmargin=1in,bmargin=1in,lmargin=1in,rmargin=1in}
+\setcounter{tocdepth}{1}
+\usepackage{color}
+\usepackage{babel}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{graphicx}
+\usepackage[unicode=true,pdfusetitle,
+ bookmarks=true,bookmarksnumbered=false,bookmarksopen=false,
+ breaklinks=false,pdfborder={0 0 0},pdfborderstyle={},backref=false,colorlinks=false]
+ {hyperref}
+
+\makeatletter
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Textclass specific LaTeX commands.
+\numberwithin{equation}{section}
+\numberwithin{figure}{section}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% User specified LaTeX commands.
+\usepackage{titlesec}
+\titleformat{\part}
+  {\normalfont\sffamily\huge}
+  {\partname\ \thepart}{1em}{}
+\titleformat{\chapter}[display]
+  {\normalfont\sffamily\huge}
+  {\chaptertitlename\ \thechapter}{20pt}{\Huge}
+\titleformat{\section}
+  {\normalfont\sffamily\Large}
+  {\thesection}{1em}{}
+\titleformat{\subsection}
+  {\normalfont\sffamily\large}
+  {\thesection}{1em}{}
+\titleformat{\subsubsection}
+  {\normalfont\sffamily\normalsize}
+  {\thesection}{1em}{}
+
+\usepackage{newtxtext}
+\usepackage{titletoc}
+
+\contentsmargin[1cm]{0cm}
+
+\titlecontents{part}[0em]{\vskip12pt\bfseries\sffamily}
+{\thecontentslabel\enspace}
+{\hspace{1.05em}}
+{ \hfill\contentspage}[\vskip 6pt]
+
+\titlecontents{chapter}[0em]{\vskip12pt\bfseries\sffamily}
+{\thecontentslabel\enspace}
+{\hspace{1.05em}}
+{ \hfill\contentspage}[\vskip 6pt]
+
+\titlecontents{section}[1em]{\sffamily}
+{\thecontentslabel\enspace}
+{}
+{\titlerule*[1pc]{.}\quad\contentspage}[\vskip 4pt]
+
+\titlecontents{subsection}[2.7em]{\sffamily}
+{\thecontentslabel\enspace}
+{}
+{\titlerule*[1pc]{.}\quad\contentspage}[\vskip 3pt]
+
+\usepackage{listings}
+\usepackage{color}
+\definecolor{ltgry}{rgb}{0.95,0.95,0.95}
+\definecolor{purplekeywords}{rgb}{0.75,0,0.75}
+\definecolor{greycomments}{rgb}{0.5,0.5,0.5}
+\definecolor{redstrings}{rgb}{0.64,0.08,0.08}
+\lstset{backgroundcolor=\color{ltgry}}
+
+\lstset{columns=fixed, basicstyle=\ttfamily, basewidth=0.55em}
+
+\usepackage{pifont}
+\newcommand{\xmark}{\ding{55}}
+
+\makeatother
+
+\usepackage{listings}
+\lstset{language=Java,
+showspaces=false,
+showtabs=false,
+breaklines=true,
+showstringspaces=false,
+breakatwhitespace=true,
+escapeinside={(*@}{@*)},
+commentstyle={\color{greycomments}},
+keywordstyle={\color{purplekeywords}\bfseries},
+stringstyle={\color{redstrings}},
+basicstyle={\ttfamily},
+morekeywords={ var, fn, print,in }}
+\renewcommand{\lstlistingname}{Listing}
+
+\begin{document}
+\title{\textsf{\emph{\includegraphics[width=3.5in]{Figures/morphologo}}}\\
+\textsf{\emph{Version 0.6.1}}}
+
+\maketitle
+\newpage{}
+
+\chapter{Variables and types}
+
+Like many languages, \emph{Morpho} allows the programmer to define
+\emph{variables} to contain pieces of information of \emph{values}.
+A variable is created using the \lstinline!var! keyword, which is
+followed by its name
+
+\begin{lstlisting}
+var a
+\end{lstlisting}
+
+\noindent Variable names must begin with an alphabetical character
+or the underscore character \texttt{\_}, and may consist of any combination
+of alphanumeric characters or underscores thereafter. Variable names
+are case sensitive, so 
+
+\noindent 
+\begin{lstlisting}
+var a
+var A
+\end{lstlisting}
+each refer to distinct variables.
+
+\noindent After creating a variable, you may immediately store information
+in it by providing an \emph{initializer, }which can be any value
+
+\begin{lstlisting}
+var i = 1
+var str = "Hello"
+\end{lstlisting}
+
+
+\section{Types}
+
+\emph{Morpho} is a dynamically typed language: Every value has a definite
+type, and Morpho is always able to tell what type it is, but variables
+may generally contain values of any type and functions or methods
+can accept arguments of any type. 
+
+There are a number of basic types in Morpho:
+\begin{description}
+\item [{nil}] is a special value that represents the \emph{absence} of
+information and is different from any other value. Unless an initializer
+is provided, Morpho variables initially contain \lstinline!nil! after
+declaration. 
+\item [{Bool}] values contain either \lstinline!true! or \lstinline!false!. 
+\item [{Int}] values contain 32 bit signed integer numbers. An integer
+constant is written intuitively, e.g. \lstinline!1!, \lstinline!50!,
+\lstinline!1000! and may include a negative sign \lstinline!-100!.
+\item [{Float}] values contain double precision floating point numbers.
+You can write numeric constants either using a decimal \lstinline!1.5!
+or in scientific notation, e.g. \lstinline!1e10!, \lstinline!1.6e-19!
+or \lstinline!6.625e26!.
+\item [{Object}] values encompass many additional types, from Strings,
+Lists, Matrices and more. 
+\end{description}
+
+\section{Strings}
+
+Strings are sequences of unicode UTF8 encoded characters. You can
+access individual characters using index notation
+
+\begin{lstlisting}
+var h = "Hello"
+print h[0]
+\end{lstlisting}
+
+
+\section{Strings}
+
+
+\end{document}
