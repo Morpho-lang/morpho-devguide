@@ -9583,44 +9583,23 @@ foo
 
 \end_inset
 
- or call with no arguments to get a list of properties.
+ or call with no arguments to get a list of properties 
+\begin_inset listings
+inline true
+status open
+
+\begin_layout Plain Layout
+
+has()
+\end_layout
+
+\end_inset
+
+.
 \end_layout
 
 \begin_layout Enumerate
-\begin_inset listings
-inline true
-status open
 
-\begin_layout Plain Layout
-
-respondsto
-\end_layout
-
-\end_inset
-
- Tests if an object provides a method.
- Either give a method label as a string, e.g.
- 
-\begin_inset listings
-inline true
-status open
-
-\begin_layout Plain Layout
-
-respondsto(
-\begin_inset Quotes eld
-\end_inset
-
-foo
-\begin_inset Quotes erd
-\end_inset
-
-)
-\end_layout
-
-\end_inset
-
- or call with no arguments to get a list of methods.
 \end_layout
 
 \begin_layout Chapter
